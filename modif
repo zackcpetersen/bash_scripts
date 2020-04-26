@@ -1,0 +1,38 @@
+#! /bin/bash
+
+dir="$1"
+
+if [[ ! -d $dir ]]; then
+    echo "NOT A DIRECTORY"
+    exit
+fi
+
+# DETERMINE OS TYPE FOR STAT COMMAND
+if [[ $OSTYPE == "linux-gnu" ]]; then
+    echo "**************** LINUX BOI ****************"
+    content_files=$(stat -c %y $dir/* | cut -c 12-13)
+fi
+if [[ $OSTYPE == "darwin"* ]]; then
+    echo "**************** MAC-y BOI ****************"
+    content_files=$(stat -f %Sm $dir/* | cut -c 08-09)
+fi
+
+for k in {0..23}; do
+    hours[k]=0;
+done
+
+for i in $content_files; do
+    #this is how to remove the leading zero on the indexed number!
+    j=${i#0}
+    (( hours[j]=${hours[j]} +1 ))
+done
+
+# echo ${hours[@]}
+
+echo -e "Hour \t Files \t\t Hour \t Files"
+echo -e "----- \t ----- \t\t ----- \t -----"
+
+for k in {0..11}; do
+    m=$(( $k +12 ))
+    echo -e "$k \t ${hours[k]} \t\t $m \t ${hours[m]}"
+done

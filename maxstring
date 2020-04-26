@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# THIS IS INCOMPLETE --> STRINGS IS NOT FINDING INDIVIDUAL WORDS, BUT THE ENTIRE FILE INSTEAD
+
+file_name="$1"
+echo "Looking inside -----> ${file_name}"
+
+if [[ -r "$file_name" ]]; then
+s=$(strings "$file_name");
+
+ref_word='';
+max_len=0;
+
+for i in $s; do
+    # echo "$i"
+    len=${#i}
+    echo "$i -----> $len"
+    sleep .01
+
+    if [[ $len -gt $max_len ]]; then
+        ref_word=$i;
+        max_len=$len;
+    fi
+done
+else
+    echo "File is NOT readable/non-existing"
+    exit
+fi
+
+echo -e "\n"
+echo "************** RESULTS **************"
+echo "Longest Word Is: ${ref_word}"
+echo "Its Length Is: ${len}"

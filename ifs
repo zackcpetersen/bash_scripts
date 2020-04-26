@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# ************************************************
+# CHANGING THE DEFAULT IFS (INTERNAL FIELD SEPARATOR)
+# ************************************************
+
+FILE=/etc/passwd
+read -p "enter the username for the file you're searching " username
+
+info=$(grep "$username" "$FILE")
+
+echo "$info"
+
+old_IFS=$IFS
+IFS=$:
+if [[ -n "$info" ]]; then
+    read user pw uid gid fullname home shell <<< "$info"
+
+    echo "User is: $user"
+    echo "pw is: $pw"
+    echo "uid is: $uid"
+    echo "gid is: $gid"
+    echo "fullname is: $fullname"
+    echo "home is: $home"
+    echo "shell is: $shell"
+else
+    echo "User not found"
+fi
+
+IFS=$old_IFS

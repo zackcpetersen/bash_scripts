@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+old_IFS="$IFS";
+IFS=":";
+
+# CHECK IF DIRECTORY IS PRESENT IN PATH
+if [[ "$1" == "-d" ]]; then
+    mydir="$2";
+    for dir in $PATH; do
+        if [[ "$mydir" == "$dir" || "$mydir" == "$dir/" ]]; then
+            echo "*************** FOUND Directory ***************"
+        fi
+    done
+fi
+
+# CHECK IF A COMMAND IS PRESENT IN PATH
+if [[ "$1" == "-c" ]]; then
+    mycom="$2";
+    for dir in $PATH; do
+        if [[ -e "$dir/$mycom" ]]; then
+            echo "*************** Command PRESENT in PATH ***************"
+            echo "$dir/$mycom"
+        fi
+    done
+fi
+
+# CLEAN LIST OF PATH
+if [[ "$1" == "" ]]; then
+    for dir in $PATH; do
+        echo "$dir"
+    done
+fi
+
+IFS="$old_IFS"
